@@ -18,6 +18,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
+    public function summoner_name(){
+        return $this->hasMany(SummonerName::class);
+    }
+
     protected $fillable = [
         'name',
         'email',
