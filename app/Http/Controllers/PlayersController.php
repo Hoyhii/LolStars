@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SummonerName;
 use Goutte\Client;
 use Illuminate\Http\Request;
 use App\Models\Player;
@@ -16,7 +17,8 @@ class PlayersController extends Controller
     public function index()
     {
         $players = Player::all();
-        return view('welcome', compact('players'));
+        $summoners = SummonerName::all();
+        return view('welcome', compact('players','summoners'));
     }
 
     /**

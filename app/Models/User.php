@@ -18,10 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-    public function summoner_name(){
-        return $this->hasMany(SummonerName::class);
+    public function summoner_names(){
+        return $this->hasMany(SummonerName::class)->orderBy('created_at');
     }
 
+    protected $table = 'users';
     protected $fillable = [
         'name',
         'email',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SummonerName;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,8 @@ class UserController extends Controller
     public function index($id)
     {
         $user = User::findOrFail($id);
-        return view('players.index', compact('user'));
+        $summoners = $user->summoner_names;
+        return view('players.index', compact('user','summoners'));
     }
     public function show($id)
     {
@@ -44,11 +46,10 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->name = $request->input('name');
-        $user->summoner_names = $request->input('summoner_names');
-        $user->region = $request->input('region');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
         $user->country = $request->input('country');
         $user->role = $request->input('role');
-        $user->league = $request->input('league');
         $user->team = $request->input('team');
         $user->youtube = $request->input('youtube');
         $user->twitch = $request->input('twitch');

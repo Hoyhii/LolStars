@@ -8,62 +8,61 @@ use App\Http\Requests\UpdateSummonerNameRequest;
 
 class SummonerNameController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $user = auth()->user();
+        return view('summoner.create',compact('user'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreSummonerNameRequest $request)
     {
-        $request->validate([
+        $user = auth()->user();
+        $data = request()->validate([
             'summoner_name' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
+            'region' => 'required|string|max:10',
+            //I need to gather rank, winrate,games trough league database
         ]);
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(SummonerName $summonerName)
-    {
-        //
-    }
+        auth()->user()->summoner_names()->create([
+            'summoner_name' => $data['summoner_name'],
+            'region' => $data['region'],
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SummonerName $summonerName)
-    {
-        //
+        return redirect("/player/{$user->id}/profile")->with('success', 'Summoner added successfully.');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSummonerNameRequest $request, SummonerName $summonerName)
+    public function edit($id)
     {
-        //
+        $user = auth()->user();
+        $summoner_name = SummonerName::findOrFail($id);
+        return view('summoner.edit', compact('summoner_name','user'));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SummonerName $summonerName)
+    public function update(SummonerName $summoner_name)
     {
-        //
+        $user = auth()->user();
+
+        $data = request()->validate([
+            'summoner_name' => 'required|string|max:255',
+            'region' => 'required|string|max:10',
+        ]);
+
+        $summoner_name->update(array_merge(
+            $data
+        ));
+
+        return redirect("/player/{$user->id}/profile")
+            ->with('success', 'Summoner details changed successfully.');
+    }
+    public function destroy(int $id)
+    {
+        $user = auth()->user();
+        $summonerName = SummonerName::findOrFail($id)->delete();
+        if (is_null($summonerName)) {
+            return response()->json(["message" => "Summoner not found."], 404);
+        }
+        SummonerName::destroy($id);
+
+        // return redirect()->back();
+        return redirect("/player/{$user->id}/profile")->with('success', 'Summoner deleted successfully.');
+
     }
 }
