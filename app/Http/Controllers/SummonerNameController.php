@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SummonerName;
 use App\Http\Requests\StoreSummonerNameRequest;
 use App\Http\Requests\UpdateSummonerNameRequest;
+use Illuminate\Http\Request;
 
 class SummonerNameController extends Controller
 {
@@ -36,18 +37,21 @@ class SummonerNameController extends Controller
         $summoner_name = SummonerName::findOrFail($id);
         return view('summoner.edit', compact('summoner_name','user'));
     }
-    public function update(SummonerName $summoner_name)
+    public function update(Request $request, $id)
     {
         $user = auth()->user();
 
-        $data = request()->validate([
+        $summoner_name = SummonerName::findOrFail($id);
+        $request->validate([
             'summoner_name' => 'required|string|max:255',
-            'region' => 'required|string|max:10',
+            'region' => 'required|string|max:255',
+        ]);
+        $summoner_name->update([
+            'summoner_name' => $request->input('summoner_name'),
+            'region' => $request->input('region'),
         ]);
 
-        $summoner_name->update(array_merge(
-            $data
-        ));
+
 
         return redirect("/player/{$user->id}/profile")
             ->with('success', 'Summoner details changed successfully.');

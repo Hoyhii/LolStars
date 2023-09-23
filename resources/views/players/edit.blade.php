@@ -10,9 +10,9 @@
                     <div class="card-header">Edit Profile</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('players.update', $user->id) }}">
+                        <form action="{{ route('players.update', $user->id) }}" enctype="multipart/form-data" method="post">
                             @csrf
-                            @method('PATCH')
+                            @method('PUT')
 
                             <div class="form-group">
                                 <label for="name">Nickname</label>
@@ -27,6 +27,11 @@
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" value="{{ old('password', $user->password) }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <input type="text" class="form-control" id="country" name="country" value="{{ old('country', $user->country) }}">
                             </div>
 
                             <div class="form-group">

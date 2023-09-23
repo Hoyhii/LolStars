@@ -16,9 +16,10 @@
 
 
                     <div class="card-body">
-                        <form action="/summoner/{{$summoner_name->id}} }}" enctype="multipart/form-data" method="post">
+                        <form action="{{ route('summoner.update', $summoner_name->id) }}" enctype="multipart/form-data" method="post">
                             @csrf
-                            @method('PATCH')
+                            @method('PUT')
+                            <input type="hidden" name="summoner_id" value="{{ $summoner_name->id }}">
 
                             <div class="form-group">
                                 <label for="summoner_name">Summoner Name</label>

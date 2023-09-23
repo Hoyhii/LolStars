@@ -30,6 +30,8 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -43,24 +45,21 @@ class UserController extends Controller
             'twitter' => 'string|max:255',
             'leaguepedia' => 'string|max:255',
         ]);
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            'country' => $request->input('country'),
+            'role' => $request->input('role'),
+            'team' => $request->input('team'),
+            'youtube' => $request->input('youtube'),
+            'twitch' => $request->input('twitch'),
+            'discord'=> $request->input('discord'),
+            'twitter' => $request->input('twitter'),
+            'leaguepedia' => $request->input('leaguepedia'),
+        ]);
 
-        $user = User::findOrFail($id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password = $request->input('password');
-        $user->country = $request->input('country');
-        $user->role = $request->input('role');
-        $user->team = $request->input('team');
-        $user->youtube = $request->input('youtube');
-        $user->twitch = $request->input('twitch');
-        $user->discord = $request->input('discord');
-        $user->twitter = $request->input('twitter');
-        $user->leaguepedia = $request->input('leaguepedia');
-
-
-        $user->save();
-
-        return redirect()->route('players.index')
+        return redirect("/player/{$user->id}/profile")
             ->with('success', 'Player details changed successfully.');
     }
 
