@@ -34,16 +34,16 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->user()->id,
             'password' => 'required|string|min:8|max:255',
             'country' => 'required|string|max:255',
             'role' => 'required|string|max:10',
-            'team' => 'string|max:255',
-            'youtube' => 'string|max:255',
-            'twitch' => 'string|max:255',
-            'discord' => 'string|max:255',
-            'twitter' => 'string|max:255',
-            'leaguepedia' => 'string|max:255',
+            'team' => 'nullable|string|max:255',
+            'youtube' => 'nullable|string|max:255',
+            'twitch' => 'nullable|string|max:255',
+            'discord' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
+            'leaguepedia' => 'nullable|string|max:255',
         ]);
         $user->update([
             'name' => $request->input('name'),
