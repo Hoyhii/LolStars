@@ -72,7 +72,7 @@ class UserController extends Controller
         }
         $user->delete();
 
-        return redirect()->route('players.index')
+        return redirect("/")
             ->with('success', 'Player deleted successfully.');
     }
 }
