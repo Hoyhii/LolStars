@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\RiotController;
 use App\Http\Controllers\SummonerNameController;
 use App\Http\Controllers\UserController;
 use App\Models\SummonerName;
@@ -36,3 +37,7 @@ Route::post('/summoner', [SummonerNameController::class, 'store'])->name('summon
 Route::get('/summoner/{id}/edit', [SummonerNameController::class, 'edit'])->name('summoner.edit');
 Route::put('/summoner/{id}', [SummonerNameController::class, 'update'])->name('summoner.update');
 Route::delete('/summoner/{id}', [SummonerNameController::class, 'destroy'])->name('summoner.destroy');
+
+//riot api test-blade
+Route::get('/test', [RiotController::class, 'getSummonerInfo'])->name('getSummonerInfo');
+
