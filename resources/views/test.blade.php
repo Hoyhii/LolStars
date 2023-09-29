@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.app')
+
+@section('content')
+
 <head>
-    <title>Summoner Info</title>
+    <title>Riot API Test</title>
 </head>
 <body>
-<h1>Summoner Information</h1>
-
-@if(isset($summonerData))
-    <p>Summoner Name: {{ $summonerData['name'] }}</p>
-    <p>Summoner Level: {{ $summonerData['summonerLevel'] }}</p>
-    <!-- Add more data fields here as needed -->
-@else
-    <p>Summoner not found.</p>
-@endif
+<h1>Riot API Test</h1>
+<h2>Felhasználó adatai:</h2>
+<pre>
+        {{ json_encode($userData, JSON_PRETTY_PRINT) }}
+    </pre>
 </body>
-</html>
+
+
+@endsection
