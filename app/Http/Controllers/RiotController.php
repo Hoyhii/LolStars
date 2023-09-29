@@ -9,8 +9,6 @@ class RiotController extends Controller
 {
     public function getSummonerInfo(Request $request)
     {
-        $user = auth()->user();
-
         $riotApiKey = env('RIOT_API_KEY');
 
         $username = urlencode("Hoyhi");
@@ -21,6 +19,6 @@ class RiotController extends Controller
         ]);
 
         $userData = $response->json();
-        return view('test', compact('userData','user'));
+        return view('test', compact('userData'));
     }
 }

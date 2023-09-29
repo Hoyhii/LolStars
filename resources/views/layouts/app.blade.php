@@ -78,12 +78,12 @@
 
 
                                 <div class="dropdown-menu dropdown-menu-end bg-color-dark" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('players.index', $user->id) }}"
+                                    <a class="dropdown-item" href="{{ route('players.index', Auth::user()->id) }}"
                                        onclick="event.AT_TARGET;
                                                      submit();">
                                         My Profile
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('players.edit', $user->id) }}"
+                                    <a class="dropdown-item" href="{{ route('players.edit', Auth::user()->id) }}"
                                        onclick="event.AT_TARGET;
                                                  submit();">Edit Profile
                                     </a>
