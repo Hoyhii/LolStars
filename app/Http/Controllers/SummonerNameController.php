@@ -31,7 +31,7 @@ class SummonerNameController extends Controller
             'tw2' => 'TW',
             'vn2' => 'VN',
         ];
-        return view('summoner.create',compact('user'));
+        return view('summoner.create',compact('user','regions'));
     }
     public function store(StoreSummonerNameRequest $request)
     {
@@ -41,16 +41,18 @@ class SummonerNameController extends Controller
             'region' => 'required|string|max:10',
         ]);
 
+        $region = $data['region'];
+
         $riotApiKey = env('RIOT_API_KEY');
         $username = urlencode($data['summoner_name']);
 
-        $response = Http::get("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{$username}", [
+        $response = Http::get("https://{$region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{$username}", [
             'api_key' => $riotApiKey,
         ]);
         $responseJson = $response->json();
         $summonerId = $responseJson["id"];
 
-        $responsev2 = Http::get("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/{$summonerId}", [
+        $responsev2 = Http::get("https://{$region}.api.riotgames.com/lol/league/v4/entries/by-summoner/{$summonerId}", [
             'api_key' => $riotApiKey,
         ]);
 
@@ -64,7 +66,7 @@ class SummonerNameController extends Controller
 
         auth()->user()->summoner_names()->create([
             'summoner_name' => $data['summoner_name'],
-            'region' => $data['region'],
+            'region' => $region,
             'rank' => $tier." ".$rank,
             'winrate' => $wins / $games * 100,
             'games' => $games,
@@ -76,9 +78,29 @@ class SummonerNameController extends Controller
     }
     public function edit($id)
     {
-        $user = auth()->user();
+
+        $regions = [
+            'euw1' => 'EUW',
+            'eun1' => 'EUNE',
+            'na1' => 'NA',
+            'kr' => 'kr',
+            'br1' => 'BR',
+            'la1' => 'LAN',
+            'la2' => 'LAS',
+            'oc1' => 'OCE',
+            'ru1' => 'RU',
+            'tr1' => 'TR',
+            'jp1' => 'JP',
+            'ph2' => 'PH',
+            'sg2' => 'SG',
+            'tw2' => 'TW',
+            'vn2' => 'VN',
+        ];
+
         $summoner_name = SummonerName::findOrFail($id);
-        return view('summoner.edit', compact('summoner_name','user'));
+
+        $defaultRegion = $summoner_name->region;
+        return view('summoner.edit', compact('summoner_name','regions','defaultRegion'));
     }
     public function update(Request $request, $id)
     {
@@ -91,18 +113,17 @@ class SummonerNameController extends Controller
         ]);
 
 
-
-
         $riotApiKey = env('RIOT_API_KEY');
         $username = urlencode($request->summoner_name);
+        $region = $request->region;
 
-        $response = Http::get("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{$username}", [
+        $response = Http::get("https://{$region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{$username}", [
             'api_key' => $riotApiKey,
         ]);
         $responseJson = $response->json();
         $summonerId = $responseJson["id"];
 
-        $responsev2 = Http::get("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/{$summonerId}", [
+        $responsev2 = Http::get("https://{$region}.api.riotgames.com/lol/league/v4/entries/by-summoner/{$summonerId}", [
             'api_key' => $riotApiKey,
         ]);
 

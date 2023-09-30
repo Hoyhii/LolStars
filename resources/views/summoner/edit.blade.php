@@ -28,7 +28,11 @@
 
                             <div class="form-group">
                                 <label for="region">Region</label>
-                                <input type="text" class="form-control" id="region" name="region" value="{{ old('region', $summoner_name->region) }}">
+                                <select id="region" name="region">
+                                    @foreach($regions as $key => $name)
+                                        <option value="{{ $key }}" @if($key === $defaultRegion) selected @endif>{{ $name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </form>

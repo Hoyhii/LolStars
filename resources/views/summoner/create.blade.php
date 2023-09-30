@@ -16,7 +16,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="region" class="form-label">Region</label>
-                                    <input type="text" class="form-control" id="region" name="region" required>
+                                    <select id="region" name="region">
+                                        @foreach($regions as $key => $name)
+                                            <option value="{{ $key }}">{{ $name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </form>
