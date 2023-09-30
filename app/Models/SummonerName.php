@@ -17,5 +17,10 @@ class SummonerName extends Model
         'user_id',
         'summoner_name',
         'region',
+        'rank',
+        'winrate',
+        'games',
+        'wins',
+        'losses'
     ];
 }

@@ -13,12 +13,23 @@ class RiotController extends Controller
 
         $username = urlencode("Hoyhi");
 
-        // Riot API hívás a felhasználó adatainak lekérdezéséhez
         $response = Http::get("https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{$username}", [
             'api_key' => $riotApiKey,
         ]);
 
-        $userData = $response->json();
+        $data = $response->json();
+        $summonerId = $data["id"];
+
+        $responsev2 = Http::get("https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{$summonerId}", [
+            'api_key' => $riotApiKey,
+        ]);
+        $responsev2 = Http::get("https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/{$summonerId}", [
+            'api_key' => $riotApiKey,
+        ]);
+        $userData = $responsev2->json();
+
+        //dd($userData[0]['summonerName']);
+
         return view('test', compact('userData'));
     }
 }

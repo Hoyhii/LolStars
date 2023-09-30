@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string("rank")->nullable();
             $table->double("winrate")->nullable();
             $table->integer("games")->nullable();
+            $table->integer("wins")->nullable();
+            $table->integer("losses")->nullable();
             $table->timestamps();
         });
     }
